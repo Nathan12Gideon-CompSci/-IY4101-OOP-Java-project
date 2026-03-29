@@ -83,7 +83,7 @@ public class ShapeList {
     // 5. Returns the current size of the list
     public int getNumberOfShapes() {
         return listofShapes.size();
-
+    }
     // 9. Display details for every shape in the list
     public void display() {
         if (listofShapes.isEmpty()) {
