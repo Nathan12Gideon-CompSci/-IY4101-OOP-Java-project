@@ -63,6 +63,26 @@ public class ShapeList {
             s.scale(factor, sign); // iterates through each shape in the listofShapes and calls the scale method on each shape, passing in the factor and sign values. This allows all shapes in the list to be scaled (resized) by the specified factor, either up or down depending on the value of sign, simultaneously. This provides a convenient way to apply the same scaling transformation to multiple shapes at once.
         }
     }
+    public double area(int pos) {
+        if (pos >= 0 && pos < listofShapes.size()) {
+            return listofShapes.get(pos).getArea();
+        }
+        System.out.println("Error: Index " + pos + " out of bounds.");
+        return -1.0; // Returns -1 to indicate an error
+    }
+
+    // 4. Returns getPerimeter() of shape at given position — with bounds check
+    public double perimeter(int pos) {
+        if (pos >= 0 && pos < listofShapes.size()) {
+            return listofShapes.get(pos).getPerimeter();
+        }
+        System.out.println("Error: Index " + pos + " out of bounds.");
+        return -1.0;
+    }
+
+    // 5. Returns the current size of the list
+    public int getNumberOfShapes() {
+        return listofShapes.size();
 
     // 9. Display details for every shape in the list
     public void display() {
