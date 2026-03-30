@@ -34,4 +34,14 @@ public class Coordinates {
 
     public String display() { return "X = " + this.x + ", Y = " + this.y; } // this method returns a string representation of the coordinates in the format "X = x, Y = y", where x and y are the current values of the x and y coordinates respectively.
 
+    public String getX() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getX'");
+    }
+
+    public String getY() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getY'");
+    }
+
 }
