@@ -13,13 +13,17 @@ public abstract class Shape { // we set the class to be abstract because we will
         position.translate(dx, dy); // Reuses Coordinate's logic! 
     }
 
-    // Abstract methods to be overridden by children programs: set this method and all others to abstract since they will be different for each shape.
+    public Coordinates getPosition() { //gets positions-missed that
+        return position;
+    }
+
+    public int getSides() { // side count
+        return sides;
+    }
+
+    // methods that will be used.
     public abstract double getArea();
-
     public abstract double getPerimeter();
-
     public abstract void scale(int factor, boolean sign);
-
     public abstract String display();
-    
 }
