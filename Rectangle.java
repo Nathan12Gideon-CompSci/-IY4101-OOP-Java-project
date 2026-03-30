@@ -1,33 +1,45 @@
-public class Rectangle extends Shape {
-    private int width; // sets private variables for the width and length of the rectangle
-    private int length;
+public class Rectangle extends Shape { // Rectangle class extends the abstract Shape class
+    private int width; // Private field to store the width of the rectangle
+    private int length;// Private field to store the length of the rectangle
 
     public Rectangle(Coordinates position, int width, int length) {
-        // the constructor for the Rectangle class takes in a Coordinates object position, an integer width, and an integer length as parameters. It calls the constructor of the superclass (Shape) using super() to initialize the sides variable with 4 (since a rectangle has 4 sides) and sets the position variable to the provided Coordinates object. It then initializes the width and length variables with the provided values.
-        super(4, position); // sets the sides variable to 4 (since a rectangle has 4 sides) and initializes the position variable with the provided Coordinates object by calling the constructor of the superclass (Shape) using super().
+        // Calls the superclass (Shape) constructor to set sides to 4 and the position
+        super(4, position); // Initializes the width and length fields with the provided values
         this.width = width;
         this.length = length;
     }
 
-    @Override //(zfm, 2011)
-    public double getArea() { return width * length; } // the getArea() method calculates and returns the area of the rectangle by multiplying the width and length variables together. This method overrides the abstract getArea() method defined in the Shape class, providing a specific implementation for calculating the area of a rectangle based on its dimensions.
+    @Override 
+    public double getArea() {  // Area of a rectangle : A = width * length
+        // Calculates area by multiplying width and length
+        return (double) width * length; 
+    } 
 
-    @Override // overrides the getPerimeter() method from the Shape class to provide a specific implementation for calculating the perimeter of a rectangle based on its dimensions. The getPerimeter() method calculates and returns the perimeter of the rectangle by adding twice the width and twice the length together.
-    public double getPerimeter() { return 2 * width + 2 * length; } //  the getPerimeter() method calculates and returns the perimeter of the rectangle by adding twice the width and twice the length together. This method overrides the abstract getPerimeter() method defined in the Shape class, providing a specific implementation for calculating the perimeter of a rectangle based on its dimensions.
+    @Override 
+    public double getPerimeter() { // Perimeter of a rectangle : P = 2 * (width + length)
+        // Calculates perimeter as the sum of all sides
+        return 2.0 * (width + length); 
+    } 
 
     @Override
-    public void scale(int factor, boolean sign) { // the scale() method takes an integer factor and a boolean sign as parameters. If the sign is true, it multiplies the width and length by the factor, effectively scaling the rectangle up. If the sign is false, it divides the width and length by the factor, effectively scaling the rectangle down. This method overrides the abstract scale() method defined in the Shape class, providing a specific implementation for scaling a rectangle based on its dimensions and the provided factor and sign.
+    public void scale(int factor, boolean sign) { // Scales the width and length of the rectangle based on the factor and sign
         if (sign) {
+            // Scales width and length up
             width *= factor; 
             length *= factor;
-        } else {
+        } else if (factor != 0) { 
+            // Scales width and length down, with a check to prevent division by zero
             width /= factor;
             length /= factor;
         }
     }
 
     @Override
-    public String display() { // the display() method returns a string representation of the rectangle, including its type (Rectangle), width, length, area, and perimeter. It uses the getArea() and getPerimeter() methods to calculate the area and perimeter values to include in the display string. This method overrides the abstract display() method defined in the Shape class, providing a specific implementation for displaying the details of a rectangle.
-        return "Rectangle | Width: " + width + ", Length: " + length + ", Area: " + getArea() + ", Perimeter: " + getPerimeter(); // [cite: 91]
-    }
-}
+    public String display() { 
+        // Updated to include the position for consistency and formatted numbers for readability
+        return "Rectangle at (" + position.getX() + "," + position.getY() + 
+               ") | Width: " + width + ", Length: " + length + 
+               " | Area: " + String.format("%.2f", getArea()) + 
+               " | Perimeter: " + String.format("%.2f", getPerimeter());
+    } //the use of String.format("%.2f", value) ensures that the area and perimeter are displayed with two decimal places for better readability
+}   //(V, 2024)
