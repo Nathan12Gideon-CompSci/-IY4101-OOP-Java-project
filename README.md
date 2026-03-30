@@ -8,7 +8,14 @@ In this repoistory will be:
 
 - **Readme.md**
 - **Coursework Assessment Brief September 2025 — Practical Programming Assignment 2: OOP.pdf**
-- **Java.java**
+- **Coordinates.java**
+- **Shape.java**
+- **ShapeList.java**
+- **ShapeManagement.java**
+- **Square.java**
+-**Triangle.java**
+-**Circle.java**
+-**Rectangle.java** 
 - **UML.jpg**
 
   **This document is will attest to the proof that the student, has not; in any case conducted or voliation of the University of York's Academic Integrity**
