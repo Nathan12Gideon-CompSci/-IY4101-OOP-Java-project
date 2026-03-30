@@ -1,144 +1,92 @@
-import java.util.Scanner; // to read user input from the command line
+import java.util.Scanner; // Added for reading user input from the console
+// the main point of this class is to provide a user interface for managing shapes, allowing users to add, remove, view, and manipulate shapes in a list through a console-based menu system. It interacts with the ShapeList class to perform operations on the collection of shapes and uses the Scanner class to read user input from the console.
 
-/**
- * ShapeManagement is the entry point for the application.
- * It provides a Command Line Interface (CLI) for managing a list of shapes.
- */
 public class ShapeManagement {
+    public static void main(String[] args) { // The main method serves as the entry point of the program, where it initializes a ShapeList to store shapes and uses a Scanner to read user input for managing the shapes through a menu-driven interface.
+        ShapeList myShapes = new ShapeList(); // Initializes a new ShapeList object to store and manage the collection of shapes that the user will interact with throughout the program.
+        Scanner sc = new Scanner(System.in); // Creates a Scanner object to read user input from the console, allowing the program to capture user choices and shape parameters for various operations.
+        int choice = -1; // Initializes a variable to store the user's menu choice, starting with -1 to ensure the menu is displayed at least once and to control the flow of the program based on user input.
 
-    public static void main(String[] args) { //we now enter the main method
-        // Create the ShapeList object at the start
-        ShapeList myShapes = new ShapeList();
-        //instialise scanner
-        Scanner sc = new Scanner(System.in);
+        while (choice != 0) { // Enters a loop that continues until the user chooses to exit (by entering 0). Inside the loop, it displays the menu, reads the user's choice, and performs actions based on that choice using a switch statement.
+            displayMenu();
 
-        int choice = -1; // set this choice : HEAVLIY IMPORTANT TO DO SO.
-
-        // Menu runs inside a loop until the user chooses 0
-        while (choice != 0) {
-
-            displayMenu(); // calls the displayMenu() method to show the available options to the user. This method is defined later in the code and prints out the menu choices for managing shapes, such as adding a shape, removing a shape, viewing shape details, etc.
-            
-            // Check if input is an integer to prevent crashes
-            if (sc.hasNextInt()) {
-                choice = sc.nextInt();
-                sc.nextLine(); // Consume newline character
-            } else {
-                System.out.println("Invalid input. Please enter a number.");
-                sc.nextLine(); // Clear the invalid input
-                continue;
+            if (sc.hasNextInt()) { // Checks if the next input is an integer before attempting to read it, which helps prevent InputMismatchException and ensures that the program can handle invalid input gracefully.
+                choice = sc.nextInt(); // Reads the user's menu choice as an integer, which will determine the action to be performed in the switch statement that follows.
+                sc.nextLine(); // Consumes the newline character left in the input buffer after reading the integer, ensuring that subsequent calls to sc.nextLine() will work correctly for reading string input without being skipped.
+            } else { // If the input is not an integer, it prints an error message and continues the loop to prompt the user again, allowing for robust handling of invalid input without crashing the program.
+                System.out.println("Invalid input.");
+                sc.nextLine();
+                continue;// Continues to the next iteration of the loop, prompting the user again for a valid menu choice.
             }
-            // switch statement to handle the user's menu choice.
-            switch (choice) {
-                case 1:
-                    addShapeMenu(myShapes, sc); // case 1 calls the addShapeMenu() method, passing in the myShapes ShapeList object and the Scanner object sc. This method is defined later in the code and handles the logic for adding a new shape to the list based on user input, such as selecting the type of shape, entering its dimensions, and creating the corresponding shape object to be added to the ShapeList.
+
+            switch (choice) {  // Uses a switch statement to execute different blocks of code based on the user's menu choice, allowing for organized and clear handling of various operations such as adding shapes, removing shapes, displaying information, and manipulating shapes in the list.
+                case 1: addShapeMenu(myShapes, sc); break; // Calls a helper method to handle the process of adding a new shape to the ShapeList, passing the current ShapeList and Scanner as arguments to facilitate user input for shape parameters.
+                case 2:// Prompts the user to enter the position of the shape they wish to remove from the ShapeList, reads the input, and then calls the removeShape method of ShapeList to remove the shape at the specified position.
+                    System.out.print("Enter position: ");
+                    myShapes.removeShape(sc.nextInt()); // Reads the position as an integer and attempts to remove the shape at that index from the list, with error handling in the ShapeList class to manage invalid positions.
+                    sc.nextLine();
                     break;
-                case 2: // case 2 prompts the user to enter the position of the shape they want to remove from the list. It then reads the position as an integer and calls the removeShape() method on the myShapes ShapeList object, passing in the position as an argument. This method is defined in the ShapeList class and handles
-                    System.out.print("Enter position to remove: ");
-                    int removePos = sc.nextInt();
-                    myShapes.removeShape(removePos);
+                case 3:// Prompts the user to enter the position of the shape they wish to view information about, reads the input, retrieves the shape from the ShapeList using getShape, and then displays its information using the display method of the Shape class. If the shape is not found (i.e., getShape returns null), it prints "Not found."
+                    System.out.print("Enter position: ");
+                    Shape s = myShapes.getShape(sc.nextInt());// Reads the position as an integer and retrieves the shape at that index from the list, storing it in a variable for later use in displaying its information.
+                    sc.nextLine();
+                    System.out.println(s != null ? s.display() : "Not found.");
                     break;
-                case 3: // case 3 prompts the user to enter the position of the shape they want to view details about. It then reads the position as an integer and calls the getShape() method on the myShapes ShapeList object, passing in the position as an argument. This method returns the shape at the specified position in the list, which is stored in the variable s. If s is not null (i.e., a shape exists at that position), it calls the display() method on that shape to print its details. If s is null, it prints an error message indicating that the shape was not found.
-                    System.out.print("Enter position to view: ");
-                    int viewPos = sc.nextInt();
-                    Shape s = myShapes.getShape(viewPos);
-                    if (s != null) {
-                        System.out.println(s.display());
-                    } else {
-                        System.out.println("Error: Shape not found.");
-                    }
+                case 4:
+                    System.out.print("Enter position: ");// Prompts the user to enter the position of the shape for which they want to calculate the area and perimeter, reads the input, and then calls the area and perimeter methods of ShapeList to retrieve and display the area and perimeter of the shape at the specified position. If the shape is not found (i.e., area returns -1.0), it does not display any information.
+                    int p = sc.nextInt(); sc.nextLine();
+                    double a = myShapes.area(p);// Reads the position as an integer and retrieves the area of the shape at that index from the list, storing it in a variable for later use in displaying the area and perimeter information.
+                    if (a != -1.0) System.out.println("Area: " + a + "\nPerimeter: " + myShapes.perimeter(p));
                     break;
-                case 4: // case 4 prompts the user to enter the position of the shape they want to calculate the area and perimeter for. It then reads the position as an integer and calls the area() and perimeter() methods on the myShapes ShapeList object, passing in the position as an argument. These methods return the area and perimeter of the shape at the specified position, which are stored in the variables area and peri respectively. If area is not -1.0 (which indicates that a valid shape was found), it prints out the area and perimeter. If area is -1.0, it does not print anything, which implies that an error message would have been printed by the area() or perimeter() method itself if the shape was not found or if it was an invalid shape for those calculations.
-                    System.out.print("Enter position for Area/Perimeter: ");
-                    int calcPos = sc.nextInt();
-                    double area = myShapes.area(calcPos);
-                    double peri = myShapes.perimeter(calcPos);
-                    if (area != -1.0) {
-                        System.out.println("Area: " + area);
-                        System.out.println("Perimeter: " + peri);
-                    }
+                case 5: myShapes.display(); break;// Calls the display method of ShapeList to print out the details of all shapes currently in the list, allowing the user to see a summary of all shapes they have added and their respective information.
+                case 6:
+                    System.out.print("dx: "); int dx = sc.nextInt();// Prompts the user to enter the translation values for the x and y directions, reads the input, and then calls the translate method of ShapeList to translate all shapes in the list by the specified amounts in the x and y directions.
+                    System.out.print("dy: "); int dy = sc.nextInt();// Reads the translation values as integers and stores them in variables for later use in translating the shapes in the list.
+                    sc.nextLine();
+                    myShapes.translate(dx, dy);// Calls the translate method of ShapeList, passing the dx and dy values to translate all shapes in the list accordingly, allowing the user to move all shapes by a specified amount in both directions.
                     break;
-                case 5: 
-                    // Calls displayAll() on ShapeList
-                    myShapes.display();
+                case 7:
+                    System.out.print("Factor: "); int f = sc.nextInt();// Prompts the user to enter a scaling factor and whether to scale up or down, reads the input, and then calls the scale method of ShapeList to scale all shapes in the list based on the provided factor and direction (up or down).
+                    System.out.print("Scale up (true/false): "); boolean up = sc.nextBoolean();
+                    // Reads the scaling factor as an integer and the direction as a boolean, storing them in variables for later use in scaling the shapes in the list.
+                    sc.nextLine();
+                    myShapes.scale(f, up);// Calls the scale method of ShapeList, passing the factor and direction to scale all shapes in the list accordingly, allowing the user to resize all shapes by a specified factor either up or down based on their choice.
                     break;
-                case 6: // Case 6 prompts User for translation values dx and dy, reads them as integers, and then calls the translate() method on the myShapes ShapeList object, passing in dx and dy as arguments. This method is defined in the ShapeList class and iterates through all shapes in the list, calling their individual translate() methods to update their coordinates based on the provided translation values. After translating all shapes, it prints a confirmation message to the user.
-                    System.out.print("Enter translation dx: ");
-                    int dx = sc.nextInt();
-                    System.out.print("Enter translation dy: ");
-                    int dy = sc.nextInt();
-                    myShapes.translate(dx, dy);
-                    System.out.println("All shapes translated.");
-                    break;
-                case 7: // Case 7 prompts the user to enter a scaling factor and whether to scale up or down. It reads the scaling factor as an integer and the sign as a boolean. It then calls the scale() method on the myShapes ShapeList object, passing in the factor and sign as arguments. This method is defined in the ShapeList class and iterates through all shapes in the list, calling their individual scale() methods to update their dimensions based on the provided scaling factor and direction (up or down). After scaling all shapes, it prints a confirmation message to the user.
-                    System.out.print("Enter scaling factor: ");
-                    int factor = sc.nextInt();
-                    System.out.print("Scale up (true) or down (false)? ");
-                    boolean sign = sc.nextBoolean();
-                    myShapes.scale(factor, sign);
-                    System.out.println("All shapes scaled.");
-                    break;
-                case 0:// exit protocol
-                    System.out.println("Exiting program. Goodbye!");
-                    break;
-                default: //if unrecognized input is given, print an error message and prompt the user to try again. This helps guide the user to enter valid menu options and prevents the program from crashing or behaving unexpectedly due to invalid input.
-                    System.out.println("Invalid option. Please try again.");
+                case 0: System.out.println("Goodbye!"); break;// If the user chooses to exit (by entering 0), it prints a goodbye message and breaks out of the switch statement, which will then exit the while loop and end the program.
+                default: System.out.println("Invalid choice."); break;// If the user enters a menu choice that does not match any of the defined cases, it falls into the default case, which prints an "Invalid choice." message to inform the user that their input was not recognized and prompts them to try again.
             }
         }
-        sc.close();// close the scanner to prevent resource leaks. (www.tutorialspoint.com, n.d.)
+        sc.close();// Closes the Scanner object to free up system resources, as it is no longer needed after the user has chosen to exit the program. This is a good practice to prevent resource leaks and ensure that the program cleans up properly after execution.
     }
 
-    /**
-     * Displays the main menu options to the user.
-     */
-    private static void displayMenu() {// would be better in somewhat more managed fasihon 
-        System.out.println("\n********** SHAPE MANAGER **********");
-        System.out.println("1 - Add a shape");
-        System.out.println("2 - Remove shape by position");
-        System.out.println("3 - Get info about one shape");
-        System.out.println("4 - Get Area and Perimeter of a shape");
-        System.out.println("5 - Display all shapes");
-        System.out.println("6 - Translate all shapes");
-        System.out.println("7 - Scale all shapes");
-        System.out.println("0 - Quit");
-        System.out.print("Enter choice: ");
+    private static void displayMenu() {// A helper method to display the menu options to the user, providing a clear and organized list of available actions that the user can perform on the shapes in the ShapeList. This method is called at the beginning of each iteration of the main loop to ensure that the user always has access to the menu options before making a choice.
+        System.out.println("\n--- SHAPE MANAGER ---");
+        System.out.println("1-Add, 2-Remove, 3-Info, 4-Calc, 5-Display All, 6-Translate, 7-Scale, 0-Quit");
+        System.out.print("Choice: ");
     }
 
-    /**
-     * Handles the logic for adding a new shape based on user type selection.
-     */
-    private static void addShapeMenu(ShapeList list, Scanner sc) { // this method takes in a ShapeList object and a Scanner object as parameters. It prompts the user to select the type of shape they want to add (Circle, Square, Rectangle, or Triangle) and then asks for the necessary dimensions and coordinates based on the selected shape type. It creates a new shape object with the provided information and adds it to the ShapeList using the addShape() method. Finally, it prints a confirmation message indicating that the shape was added successfully.
-        System.out.println("Select Type: 1-Circle, 2-Square, 3-Rectangle, 4-Triangle");
-        int type = sc.nextInt(); //reads user input as int
-        
-        System.out.print("Enter X coordinate: "); 
-        int x = sc.nextInt();
-        System.out.print("Enter Y coordinate: ");
-        int y = sc.nextInt();
-        Coordinates pos = new Coordinates(x, y);
+    private static void addShapeMenu(ShapeList list, Scanner sc) {
+        System.out.print("Type (1-Circle, 2-Square, 3-Rect, 4-Tri): "); // Prompts the user to enter the type of shape they want to add (Circle, Square, Rectangle, or Triangle) by entering a corresponding number, reads the input, and then based on the user's choice, it prompts for additional parameters specific to that shape type (such as radius for Circle, side length for Square, width and length for Rectangle, or vertex coordinates for Triangle) before creating the shape and adding it to the ShapeList.
+        int type = sc.nextInt();
+        System.out.print("X: "); int x = sc.nextInt();// Prompts the user to enter the x and y coordinates for the position of the shape, reads the input, and then creates a Coordinates object with those values to be used as the position for the new shape being added to the ShapeList.
+        System.out.print("Y: "); int y = sc.nextInt();// Reads the y coordinate as an integer and stores it in a variable for later use in creating the Coordinates object that will represent the position of the new shape being added to the ShapeList.
+        Coordinates pos = new Coordinates(x, y);// Creates a new Coordinates object using the x and y values provided by the user, which will be used as the position for the new shape that is being added to the ShapeList. This allows the user to specify where the shape should be located in a 2D space when it is created.
 
-        if (type == 1) { // if the user selects 1 for Circle, it prompts them to enter the radius of the circle, reads it as an integer, and then creates a new Circle object using the provided position and radius. It then adds this Circle object to the ShapeList using the addShape() method.
-            System.out.print("Enter Radius: ");
-            int r = sc.nextInt();
-            list.addShape(new Circle(pos, r));
-        } else if (type == 2) { // if the user selects 2 for Square, it prompts them to enter the side length of the square, reads it as an integer, and then creates a new Square object using the provided position and side length. It then adds this Square object to the ShapeList using the addShape() method.
-            System.out.print("Enter Side length: ");
-            int s = sc.nextInt();
-            list.addShape(new Square(pos, s));
-        } else if (type == 3) { // if the user selects 3 for Rectangle, it prompts them to enter the width and length of the rectangle, reads them as integers, and then creates a new Rectangle object using the provided position, width, and length. It then adds this Rectangle object to the ShapeList using the addShape() method.
-            System.out.print("Enter Width: ");
-            int w = sc.nextInt(); 
-            System.out.print("Enter Length: ");
-            int l = sc.nextInt();
-            list.addShape(new Rectangle(pos, w, l));
-        } else if (type == 4) {// if the user selects 4 for Triangle, it prompts them to enter the coordinates of the three vertices of the triangle. It reads these coordinates as integers and creates new Coordinates objects for each vertex. It then creates a new Triangle object using the provided position and the three vertex coordinates, and adds this Triangle object to the ShapeList using the addShape() method.
-            // Triangle needs 2 more sets of coordinates
-            System.out.print("Enter X2: "); int x2 = sc.nextInt();
-            System.out.print("Enter Y2: "); int y2 = sc.nextInt();
-            System.out.print("Enter X3: "); int x3 = sc.nextInt();
-            System.out.print("Enter Y3: "); int y3 = sc.nextInt();
-            list.addShape(new Triangle(pos, new Coordinates(x2, y2), new Coordinates(x3, y3)));
-        }
-        System.out.println("Shape added successfully."); // After adding the shape to the list, it prints a confirmation message to the user indicating that the shape was added successfully.
+        if (type == 1) {
+            System.out.print("Radius: ");// If the user chooses to add a Circle (by entering 1), it prompts them to enter the radius of the circle, reads the input, and then creates a new Circle object with the specified position and radius before adding it to the ShapeList.
+            list.addShape(new Circle(pos, sc.nextInt())); // Reads the radius as an integer and creates a new Circle object using the position and radius, then adds it to the ShapeList using the addShape method.
+        } else if (type == 2) {// If the user chooses to add a Square (by entering 2), it prompts them to enter the side length of the square, reads the input, and then creates a new Square object with the specified position and side length before adding it to the ShapeList.
+            System.out.print("Side: ");// Prompts the user to enter the side length of the square, reads the input, and then creates a new Square object using the position and side length, before adding it to the ShapeList using the addShape method.
+            list.addShape(new Square(pos, sc.nextInt()));// Reads the side length as an integer and creates a new Square object using the position and side length, then adds it to the ShapeList using the addShape method.
+        } else if (type == 3) {// If the user chooses to add a Rectangle (by entering 3), it prompts them to enter the width and length of the rectangle, reads the input, and then creates a new Rectangle object with the specified position, width, and length before adding it to the ShapeList.
+            System.out.print("Width: "); int w = sc.nextInt();
+            System.out.print("Length: "); int l = sc.nextInt();
+            list.addShape(new Rectangle(pos, w, l));// Reads the width and length as integers, creates a new Rectangle object using the position, width, and length, then adds it to the ShapeList using the addShape method.
+        } else if (type == 4) {// If the user chooses to add a Triangle (by entering 4), it prompts them to enter the coordinates of the three vertices of the triangle, reads the input, and then creates a new Triangle object with the specified position and vertex coordinates before adding it to the ShapeList.
+            System.out.print("X2 Y2 X3 Y3: ");
+            list.addShape(new Triangle(pos, new Coordinates(sc.nextInt(), sc.nextInt()), new Coordinates(sc.nextInt(), sc.nextInt())));
+        }// Reads the coordinates of the second and third vertices as integers, creates new Coordinates objects for those vertices, creates a new Triangle object using the position and vertex coordinates, then adds it to the ShapeList using the addShape method.
+        sc.nextLine();
+        System.out.println("Added.");// After successfully adding the new shape to the ShapeList, it prints a confirmation message "Added." to inform the user that their shape has been created and stored in the list.
     }
 }
