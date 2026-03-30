@@ -1,35 +1,26 @@
+public class Square extends Shape { // Square class extends the abstract Shape class
+    private int side; // Private field to store the length of the square's side
 
-public class Square extends Shape { // the Square class extends the Shape class, meaning it inherits the properties and methods of the Shape class and can also have its own specific properties and methods related to a square shape.
-    private int side; // sets a private variable for the side length of the square, which is specific to the Square class and is used to calculate the area and perimeter of the square.
-
-    public Square(Coordinates position, int side) {
-        super(4, position); // Tells parent: 4 sides, at this position
+    public Square(Coordinates position, int side) {// Constructor to initialize the square's position and side length
+        super(4, position); // Calls the superclass (Shape) constructor to set sides to 4 and the position
         this.side = side;
     }
 
-    @Override //(zfm, 2011)
-    public double getArea() {
-        return side * side;
+    @Override
+    public double getArea() { return side * side; } // Area of a square : A = side^2
+
+    @Override
+    public double getPerimeter() { return 4 * side; }// Perimeter of a square : P = 4 * side
+
+    @Override
+    public void scale(int factor, boolean sign) { // Scales the side length of the square based on the factor and sign
+        if (sign) side *= factor; // If sign is true, the side length is multiplied by the factor to scale up
+        else if (factor != 0) side /= factor; // If sign is false and factor is not zero, the side length is divided by the factor to scale down, with a check to prevent division by zero
     }
 
     @Override
-    public double getPerimeter() {
-        return 4 * side;
-    }
-
-    @Override
-    public void scale(int factor, boolean sign) {
-        if (sign) { // if the sign is true, it multiplies the side length by the factor, effectively scaling the square up. If the sign is false, it divides the side length by the factor, effectively scaling the square down. This method overrides the abstract scale() method defined in the Shape class, providing a specific implementation for scaling a square based on its side length and the provided factor and sign.
-            side *= factor;
-        } else { // if the sign is false, it divides the side length by the factor, effectively scaling the square down. This method overrides the abstract scale() method defined in the Shape class, providing a specific implementation for scaling a square based on its side length and the provided factor and sign.
-            if (factor != 0) side /= factor;
-        }
-    }
-
-    @Override
-    public String display() {
-        // Uses position from the parent to get X and Y
-        return "Square at (" + this.position.getX() + "," + this.position.getY() + 
+    public String display() {// Returns a string representation of the square, including its position, side length, and area formatted to two decimal places for readability
+        return "Square at (" + position.getX() + "," + position.getY() + 
                ") | Side: " + side + " | Area: " + String.format("%.2f", getArea());
     }
 }
